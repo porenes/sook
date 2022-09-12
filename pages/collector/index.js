@@ -1,5 +1,5 @@
 import Head from "next/head";
-import styles from "../../styles/Home.module.css";
+import styles from "../../styles/Collector.module.css";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import Image from "next/image";
 
@@ -13,7 +13,7 @@ export default function Collector({ nfts }) {
       </Head>
       <main className={styles.main}>
         <h1>{nfts.length} NFTs</h1>
-        <ul className={styles.ul}>
+        <div className={styles.grid}>
           {nfts.map((nft) => {
             nft.token.thumbnail_uri &&
               console.log(
@@ -23,26 +23,31 @@ export default function Collector({ nfts }) {
                 )
               );
             return (
-              <li className={styles.li} key={nft.fa2_address + nft.token_id}>
-                {/* {nft.token.thumbnail_uri && (
-                  <Image
-                    src={nft.token.thumbnail_uri.replace(
-                      "ipfs://",
-                      "https://ipfs.io/ipfs/"
-                    )}
-                    width="100"
-                    height="100"
-                  ></Image>
-                )} */}
-                {nft.token.artist_profile?.alias +
-                  " - " +
-                  nft.token.name +
-                  " | " +
-                  nft.token.platform}
-              </li>
+              <a
+                href="#"
+                className={styles.card}
+                key={nft.fa2_address + nft.token_id}
+              >
+                <h2>{nft.token.name}</h2>
+                <p>
+                  {nft.token.artist_profile?.alias + " | " + nft.token.platform}
+                </p>
+                <p>
+                  {nft.token.thumbnail_uri && (
+                    <Image
+                      src={nft.token.thumbnail_uri.replace(
+                        "ipfs://",
+                        "https://ipfs.io/ipfs/"
+                      )}
+                      width="100"
+                      height="100"
+                    ></Image>
+                  )}
+                </p>
+              </a>
             );
           })}
-        </ul>
+        </div>
       </main>
     </div>
   );
