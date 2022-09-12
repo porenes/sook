@@ -1,9 +1,12 @@
 import Head from "next/head";
 import styles from "../../styles/Collector.module.css";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import Image from "next/image";
+import { useRouter } from "next/router";
+import NFTCard from "../../components/nft/card";
 
 export default function Collector({ nfts }) {
+  const router = useRouter();
+  const { accountId } = router.query;
   return (
     <div className={styles.container}>
       <Head>
@@ -22,30 +25,7 @@ export default function Collector({ nfts }) {
                   "https://ipfs.io/ipfs/"
                 )
               );
-            return (
-              <a
-                href="#"
-                className={styles.card}
-                key={nft.fa2_address + nft.token_id}
-              >
-                <h2>{nft.token.name}</h2>
-                <p>
-                  {nft.token.artist_profile?.alias + " | " + nft.token.platform}
-                </p>
-                <p>
-                  {nft.token.thumbnail_uri && (
-                    <Image
-                      src={nft.token.thumbnail_uri.replace(
-                        "ipfs://",
-                        "https://ipfs.io/ipfs/"
-                      )}
-                      width="100"
-                      height="100"
-                    ></Image>
-                  )}
-                </p>
-              </a>
-            );
+            return <NFTCard nft={nft} />;
           })}
         </div>
       </main>
