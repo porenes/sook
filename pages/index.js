@@ -1,10 +1,11 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import styles from "../styles/Home.module.css";
+import { useRouter } from "next/router";
 
-export default function Home({nfts}) {
-  console.log('nfts',nfts);
+export default function Home() {
+  const { accountId } = router.query;
   return (
     <div className={styles.container}>
       <Head>
@@ -18,9 +19,7 @@ export default function Home({nfts}) {
           Welcome to <a href="#">Sook</a>
         </h1>
 
-        <p className={styles.description}>
-          Your ultimate tools for Tezos
-        </p>
+        <p className={styles.description}>Your ultimate tools for Tezos</p>
 
         <div className={styles.grid}>
           <a href="#" className={styles.card}>
@@ -28,10 +27,12 @@ export default function Home({nfts}) {
             <p>Creator tools</p>
           </a>
 
-          <a href="#" className={styles.card}>
-            <h2>Collectors &rarr;</h2>
-            <p>Collectors tools</p>
-          </a>
+          <Link href="/collector">
+            <div className={styles.card}>
+              <h2>Collectors &rarr;</h2>
+              <p>Collectors tools</p>
+            </div>
+          </Link>
         </div>
       </main>
 
@@ -48,36 +49,5 @@ export default function Home({nfts}) {
         </a> */}
       </footer>
     </div>
-  )
-}
-export async function getStaticProps() {
-  const client = new ApolloClient({
-    uri: 'https://unstable-do-not-use-in-production-api.teztok.com/v1/graphql',
-    cache: new InMemoryCache()
-  });
-  const { data } = await client.query({
-    query: gql`
-    query GetHoldings {
-      holdings(where: {holder_address: {_eq: "tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL"}}, order_by: {last_received_at: asc}) {
-        amount
-        fa2_address
-        token_id
-        token {
-          artist_address
-          artifact_uri
-          display_uri
-          name
-          platform
-          thumbnail_uri
-        }
-      }
-    }
-    
-    `
-  });
-  return {
-    props: {
-      nfts: data.holdings
-    }
-  }
+  );
 }
