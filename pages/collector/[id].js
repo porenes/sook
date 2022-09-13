@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
@@ -12,11 +13,8 @@ import {
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import HoldingTableView from "../../components/holdings/holdingTableView";
 
 export default function Collector({ nfts }) {
-  const router = useRouter();
-  const { id } = router.query;
   return (
     <Box>
       <Head>
@@ -28,7 +26,7 @@ export default function Collector({ nfts }) {
         {nfts.length} NFTs
       </Heading>
 
-      <SimpleGrid columns={[2, 3, 5, 8]}>
+      <SimpleGrid columns={[2, 3, 5]}>
         {nfts.map((nft) => {
           let platformURL = "#";
           switch (nft.token.platform) {
@@ -60,7 +58,7 @@ export default function Collector({ nfts }) {
           }
           return (
             <Box alignItems="center" justifyContent="space-between" margin="5%">
-              <Box p="5" maxW="320px" h="400px" borderWidth="1px">
+              <Box p="2" maxW="320px" h="400px" borderWidth="1px">
                 {nft.token.thumbnail_uri && (
                   <Image
                     src={nft.token.thumbnail_uri.replace(
@@ -76,13 +74,7 @@ export default function Collector({ nfts }) {
                   {nft.token.platform && (
                     <Badge colorScheme="teal">{nft.token.platform}</Badge>
                   )}
-                  <Text
-                    ml={2}
-                    textTransform="uppercase"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    color="teal.800"
-                  >
+                  <Text ml={2} fontSize="sm" fontWeight="bold" color="teal.800">
                     <Link
                       href={"https://tzkt.io/" + nft.token.artist_address}
                       isExternal
@@ -102,10 +94,20 @@ export default function Collector({ nfts }) {
                     ? nft.token.name
                     : nft.token.name?.slice(0, 25) + "..."}
                 </Text>
-                <Text mt={2}>$119/night</Text>
+                <Text mt={2}>
+                  xtz {nft.token.price / 10 ** 6} {"-> "}
+                  {nft.token.last_sales_price / 10 ** 6} {"-> "}
+                  {nft.token.lowest_price_listing / 10 ** 6}
+                  {"-> "}
+                </Text>
                 <Flex mt={2} align="center">
                   <Text ml={1} fontSize="sm">
-                    <b>4.84</b> (190)
+                    <Link href={platformURL} isExternal>
+                      {nft.token_id.length < 5
+                        ? nft.token_id
+                        : nft.token_id.slice(0, 5) + "..."}
+                      <ExternalLinkIcon />
+                    </Link>
                   </Text>
                 </Flex>
               </Box>
@@ -156,6 +158,8 @@ export async function getServerSideProps(context) {
             burned_editions
             editions
             first_sales_price
+            lowest_price_listing(path: "price")
+            price
           }
         }
       }
