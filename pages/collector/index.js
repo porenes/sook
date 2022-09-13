@@ -3,18 +3,16 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Box,
   Heading,
+  Flex,
+  Badge,
+  Text,
+  Image,
+  SimpleGrid,
   Link,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
+import HoldingTableView from "../../components/holdings/holdingTableView";
 
 export default function Collector({ nfts }) {
   const router = useRouter();
@@ -29,96 +27,92 @@ export default function Collector({ nfts }) {
       <Heading as="h1" textAlign="center">
         {nfts.length} NFTs
       </Heading>
-      <Box alignItems="center" justifyContent="space-between" margin="5%">
-        <TableContainer>
-          <Table variant="striped" size="sm">
-            <Thead>
-              <Tr>
-                <Th>Thumb</Th>
-                <Th>Name</Th>
-                <Th>Author</Th>
-                <Th>Lowest</Th>
-                <Th>Highest</Th>
-                <Th>Last</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {nfts.map((nft) => {
-                let platformURL = "#";
-                switch (nft.token.platform) {
-                  case "OBJKT":
-                    platformURL =
-                      "https://objkt.com/asset/" +
-                      nft.fa2_address +
-                      "/" +
-                      nft.token_id;
-                    break;
-                  case "VERSUM":
-                    platformURL =
-                      "https://www.versum.xyz/token/versum/" + nft.token_id;
-                    break;
-                  case "FXHASH":
-                    platformURL =
-                      "https://www.fxhash.xyz/gentk/" + nft.token_id;
-                    break;
-                  case "HEN":
-                    platformURL = "https://hic.af/o/" + nft.token_id;
-                    break;
+      6
+      <SimpleGrid columns={[2, 3, 5]}>
+        {nfts.map((nft) => {
+          let platformURL = "#";
+          switch (nft.token.platform) {
+            case "OBJKT":
+              platformURL =
+                "https://objkt.com/asset/" +
+                nft.fa2_address +
+                "/" +
+                nft.token_id;
+              break;
+            case "VERSUM":
+              platformURL =
+                "https://www.versum.xyz/token/versum/" + nft.token_id;
+              break;
+            case "FXHASH":
+              platformURL = "https://www.fxhash.xyz/gentk/" + nft.token_id;
+              break;
+            case "HEN":
+              platformURL = "https://hic.af/o/" + nft.token_id;
+              break;
 
-                  default:
-                    platformURL =
-                      "https://objkt.com/asset/" +
-                      nft.fa2_address +
-                      "/" +
-                      nft.token_id;
-                    break;
-                }
-                return (
-                  <Tr key={nft.fa2_address + nft.token_id}>
-                    <Td padding="0" textAlign="center">
-                      {nft.token.thumbnail_uri && (
-                        <Image
-                          src={nft.token.thumbnail_uri.replace(
-                            "ipfs://",
-                            "https://ipfs.io/ipfs/"
-                          )}
-                          width="50"
-                          height="50"
-                          alt={nft.token.name}
-                        ></Image>
-                      )}
-                    </Td>
-                    <Td>
-                      <Link href={platformURL} isExternal>
-                        {nft.token.name}
-                        <ExternalLinkIcon />
-                      </Link>
-                    </Td>
-                    <Td>
-                      <Link
-                        href={"https://tzkt.io/" + nft.token.artist_address}
-                        isExternal
-                      >
-                        {nft.token.artist_profile?.alias || "anon"}
-                        <ExternalLinkIcon />
-                      </Link>
-                    </Td>
-                    <Td isNumeric>
-                      {(nft.token.lowest_sales_price / 1000000).toFixed(4)}
-                    </Td>
-                    <Td isNumeric>
-                      {(nft.token.highest_sales_price / 1000000).toFixed(4)}
-                    </Td>
-                    <Td isNumeric>
-                      {(nft.token.last_sales_price / 1000000).toFixed(4)}
-                    </Td>
-                  </Tr>
-                );
-              })}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Box>
+            default:
+              platformURL =
+                "https://objkt.com/asset/" +
+                nft.fa2_address +
+                "/" +
+                nft.token_id;
+              break;
+          }
+          return (
+            <Box alignItems="center" justifyContent="space-between" margin="5%">
+              <Box p="5" maxW="320px" h="400px" borderWidth="1px">
+                {nft.token.thumbnail_uri && (
+                  <Image
+                    src={nft.token.thumbnail_uri.replace(
+                      "ipfs://",
+                      "https://ipfs.io/ipfs/"
+                    )}
+                    alt={nft.token.name}
+                    placeholder="blur"
+                    maxH="320px"
+                  />
+                )}
+                <Flex align="baseline" mt={2}>
+                  {nft.token.platform && (
+                    <Badge colorScheme="teal">{nft.token.platform}</Badge>
+                  )}
+                  <Text
+                    ml={2}
+                    textTransform="uppercase"
+                    fontSize="sm"
+                    fontWeight="bold"
+                    color="teal.800"
+                  >
+                    <Link
+                      href={"https://tzkt.io/" + nft.token.artist_address}
+                      isExternal
+                    >
+                      {nft.token.artist_profile?.alias || "anon"}
+                      <ExternalLinkIcon />
+                    </Link>
+                  </Text>
+                </Flex>
+                <Text
+                  mt={2}
+                  fontSize="xl"
+                  fontWeight="semibold"
+                  lineHeight="short"
+                >
+                  {nft.token.name?.length < 25
+                    ? nft.token.name
+                    : nft.token.name?.slice(0, 25) + "..."}
+                </Text>
+                <Text mt={2}>$119/night</Text>
+                <Flex mt={2} align="center">
+                  <Text ml={1} fontSize="sm">
+                    <b>4.84</b> (190)
+                  </Text>
+                </Flex>
+              </Box>
+            </Box>
+          );
+        })}
+      </SimpleGrid>
     </Box>
   );
 }
@@ -157,6 +151,9 @@ export async function getServerSideProps() {
             highest_sales_price
             lowest_sales_price
             last_sales_price
+            burned_editions
+            editions
+            first_sales_price
           }
         }
       }
