@@ -57,7 +57,12 @@ export default function Collector({ nfts }) {
               break;
           }
           return (
-            <Box alignItems="center" justifyContent="space-between" margin="5%">
+            <Box
+              alignItems="center"
+              justifyContent="space-between"
+              margin="5%"
+              key={nft.fa2_address + nft.token_id}
+            >
               <Box p="2" maxW="320px" h="400px" borderWidth="1px">
                 {nft.token.thumbnail_uri && (
                   <Image
@@ -75,11 +80,13 @@ export default function Collector({ nfts }) {
                     <Badge colorScheme="teal">{nft.token.platform}</Badge>
                   )}
                   <Text ml={2} fontSize="sm" fontWeight="bold" color="teal.800">
+                    <Link href={"/creator/" + nft.token.artist_address}>
+                      {nft.token.artist_profile?.alias || "anon"}
+                    </Link>
                     <Link
                       href={"https://tzkt.io/" + nft.token.artist_address}
                       isExternal
                     >
-                      {nft.token.artist_profile?.alias || "anon"}
                       <ExternalLinkIcon />
                     </Link>
                   </Text>

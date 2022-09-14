@@ -1,20 +1,25 @@
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
-import { Box, List, ListItem } from "@chakra-ui/react";
+import { Box, Center, List, ListItem } from "@chakra-ui/react";
 
 const Creator = ({ data }) => {
-  const { cid, creations } = data;
+  const { cid, creations, creations_fxhash } = data;
   return (
     <Box>
+      <Center>{cid}</Center>
       <List>
         {creations.map((token) => {
-          return <ListItem>{token.name}</ListItem>;
+          return <ListItem key={token.name}>{token.name}</ListItem>;
         })}
       </List>
-      {/* <List>
+      <List>
         {creations_fxhash.map((token) => {
-          return <ListItem>{token.name}</ListItem>;
+          return (
+            <ListItem key={token.fx_issuer_id}>
+              {token.fx_collection_name}
+            </ListItem>
+          );
         })}
-      </List> */}
+      </List>
     </Box>
   );
 };
@@ -50,33 +55,33 @@ export const getServerSideProps = async (ctx) => {
       }
     `,
   });
-  //   const data_fxhash = await client.query({
-  //     query: gql`
-  //       query GetCreationsFxhash {
-  //         tokens(
-  //           where: {
-  //             artist_address: { _eq: "tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL" }
-  //             platform: { _eq: "FXHASH" }
-  //           }
-  //           order_by: { fx_issuer_id: asc, fx_iteration: desc }
-  //           distinct_on: fx_issuer_id
-  //         ) {
-  //           fx_collection_name
-  //           platform
-  //           fx_collection_editions
-  //           fx_issuer_id
-  //           fx_iteration
-  //         }
-  //       }
-  //     `,
-  //   });
-  //   console.log(data_fxhash);
+  const res = await client.query({
+    query: gql`
+      query GetCreationsFxhash {
+        tokens(
+          where: {
+            artist_address: { _eq: "${cid}" }
+            platform: { _eq: "FXHASH" }
+          }
+          order_by: { fx_issuer_id: asc, fx_iteration: desc }
+          distinct_on: fx_issuer_id
+        ) {
+          fx_collection_name
+          platform
+          fx_collection_editions
+          fx_issuer_id
+          fx_iteration
+        }
+      }
+    `,
+  });
+  console.log(res.data);
   return {
     props: {
       data: {
         cid,
         creations: data.tokens,
-        // creations_fxhash: data_fxhash.tokens,
+        creations_fxhash: res.data.tokens,
       },
     },
   };
