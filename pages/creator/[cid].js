@@ -11,6 +11,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import PlatformTokenLink from "../../components/tokens/PlatformTokenLink";
 
 const Creator = ({ data }) => {
   const { cid, creations, creations_fxhash } = data;
@@ -19,16 +20,22 @@ const Creator = ({ data }) => {
       <Center>{cid}</Center>
       <Table size="sm">
         <Thead>
-          <Th>Name</Th>
-          <Th>Platform</Th>
-          <Th>Ed.</Th>
+          <Tr>
+            <Th>Name</Th>
+            <Th>Platform</Th>
+            <Th>Ed.</Th>
+          </Tr>
         </Thead>
         <Tbody>
           {creations.map((token) => {
             return (
-              <Tr key={token.name}>
+              <Tr key={token.platform + token.token_id}>
                 <Td>{token.name}</Td>
-                <Td>{token.platform}</Td>
+                <Td>
+                  <PlatformTokenLink token={token}>
+                    {token.platform}
+                  </PlatformTokenLink>
+                </Td>
                 <Td>{token.editions}</Td>
               </Tr>
             );
@@ -73,6 +80,8 @@ export const getServerSideProps = async (ctx) => {
           objkt_artist_collection_id
           platform
           minted_at
+          fa2_address
+          token_id
         }
       }
     `,
@@ -97,6 +106,7 @@ export const getServerSideProps = async (ctx) => {
       }
     `,
   });
+  console.log(res.data);
   return {
     props: {
       data: {
