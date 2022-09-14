@@ -1,25 +1,48 @@
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
-import { Box, Center, List, ListItem } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  List,
+  ListItem,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 
 const Creator = ({ data }) => {
   const { cid, creations, creations_fxhash } = data;
   return (
     <Box>
       <Center>{cid}</Center>
-      <List>
-        {creations.map((token) => {
-          return <ListItem key={token.name}>{token.name}</ListItem>;
-        })}
-      </List>
-      <List>
-        {creations_fxhash.map((token) => {
-          return (
-            <ListItem key={token.fx_issuer_id}>
-              {token.fx_collection_name}
-            </ListItem>
-          );
-        })}
-      </List>
+      <Table size="sm">
+        <Thead>
+          <Th>Name</Th>
+          <Th>Platform</Th>
+        </Thead>
+        <Tbody>
+          {creations.map((token) => {
+            return (
+              <Tr key={token.name}>
+                <Td>{token.name}</Td>
+                <Td>{token.platform}</Td>
+              </Tr>
+            );
+          })}
+          {creations_fxhash.map((token) => {
+            return (
+              <Tr key={token.fx_issuer_id}>
+                <Td>{token.fx_collection_name}</Td>
+                <Td>FXHASH</Td>
+              </Tr>
+            );
+          })}
+        </Tbody>
+      </Table>
+      <List></List>
+      <List></List>
     </Box>
   );
 };
@@ -41,13 +64,10 @@ export const getServerSideProps = async (ctx) => {
           }
           order_by: {
             platform: asc
-            fx_collection_name: asc
-            fx_iteration: asc
           }
         ) {
           editions
           eightscribo_title
-          fx_collection_name
           name
           objkt_artist_collection_id
           platform
