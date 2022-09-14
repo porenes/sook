@@ -24,6 +24,12 @@ const Creator = ({ data }) => {
             <Th>Name</Th>
             <Th>Platform</Th>
             <Th>Ed.</Th>
+            <Th>🔥</Th>
+            <Th>🏷</Th>
+            <Th>1st 🏷</Th>
+            <Th>🔝 💰</Th>
+            <Th>🔝 💁🏻‍♂️</Th>
+            <Th>Last 🏷</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -37,6 +43,12 @@ const Creator = ({ data }) => {
                   </PlatformTokenLink>
                 </Td>
                 <Td>{token.editions}</Td>
+                <Td>{token.burned_editions}</Td>
+                <Td>{token?.price / 10 ** 6} tz</Td>
+                <Td>{token?.first_sales_price / 10 ** 6} tz</Td>
+                <Td>{token?.highest_sales_price / 10 ** 6} tz</Td>
+                <Td>{token?.highest_offer_price / 10 ** 6} tz</Td>
+                <Td>{token?.last_sales_price / 10 ** 6} tz</Td>
               </Tr>
             );
           })}
@@ -45,6 +57,12 @@ const Creator = ({ data }) => {
               <Tr key={token.fx_issuer_id}>
                 <Td>{token.fx_collection_name}</Td>
                 <Td>FXHASH</Td>
+                <Td>?</Td>
+                <Td>?</Td>
+                <Td>?</Td>
+                <Td>?</Td>
+                <Td>?</Td>
+                <Td>?</Td>
                 <Td>?</Td>
               </Tr>
             );
@@ -75,13 +93,19 @@ export const getServerSideProps = async (ctx) => {
           order_by: {minted_at: desc}
         ) {
           editions
+          burned_editions
           eightscribo_title
+          token_id
+          fa2_address
           name
           objkt_artist_collection_id
           platform
           minted_at
-          fa2_address
-          token_id
+          first_sales_price
+          highest_sales_price
+          highest_offer_price
+          last_sales_price
+          price
         }
       }
     `,

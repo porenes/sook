@@ -15,7 +15,7 @@ export default function PlatformTokenLink({ children, token }) {
       platformURL = "https://www.fxhash.xyz/gentk/" + token.token_id;
       break;
     case "HEN":
-      platformURL = "https://hic.af/o/" + token.token_id;
+      platformURL = "https://teia.art/objkt/" + token.token_id;
       break;
     case "8BIDOU":
       platformURL = "https://www.8bidou.com/item/?id=" + token.token_id;
