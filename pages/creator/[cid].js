@@ -21,6 +21,7 @@ const Creator = ({ data }) => {
         <Thead>
           <Th>Name</Th>
           <Th>Platform</Th>
+          <Th>Ed.</Th>
         </Thead>
         <Tbody>
           {creations.map((token) => {
@@ -28,6 +29,7 @@ const Creator = ({ data }) => {
               <Tr key={token.name}>
                 <Td>{token.name}</Td>
                 <Td>{token.platform}</Td>
+                <Td>{token.editions}</Td>
               </Tr>
             );
           })}
@@ -36,6 +38,7 @@ const Creator = ({ data }) => {
               <Tr key={token.fx_issuer_id}>
                 <Td>{token.fx_collection_name}</Td>
                 <Td>FXHASH</Td>
+                <Td>?</Td>
               </Tr>
             );
           })}
@@ -62,15 +65,14 @@ export const getServerSideProps = async (ctx) => {
             artist_address: { _eq: "${cid}" }
             platform: { _neq: "FXHASH"}
           }
-          order_by: {
-            platform: asc
-          }
+          order_by: {minted_at: desc}
         ) {
           editions
           eightscribo_title
           name
           objkt_artist_collection_id
           platform
+          minted_at
         }
       }
     `,
@@ -95,7 +97,6 @@ export const getServerSideProps = async (ctx) => {
       }
     `,
   });
-  console.log(res.data);
   return {
     props: {
       data: {
