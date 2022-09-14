@@ -29,10 +29,15 @@ export default function Home() {
         <p>Your ultimate tools for Tezos</p>
 
         <Box>
-          <a href="#">
-            <Heading as="h2">Creator &rarr;</Heading>
-            <p>Creator tools</p>
-          </a>
+          <NextLink
+            href="/creator/tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL"
+            passHref
+          >
+            <Link>
+              <Heading as="h2">Creator &rarr;</Heading>
+              <p>Creator tools</p>
+            </Link>
+          </NextLink>
 
           <NextLink href="/collector" passHref>
             <Link>

@@ -119,9 +119,9 @@ export default function Collector({ nfts }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  console.log(context.query);
-  const { id } = context.query;
+export async function getServerSideProps(ctx) {
+  console.log(ctx.query);
+  const { id } = ctx.query;
   const client = new ApolloClient({
     uri: "https://unstable-do-not-use-in-production-api.teztok.com/v1/graphql",
     cache: new InMemoryCache(),
