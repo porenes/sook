@@ -19,10 +19,10 @@ export default function Navbar() {
     <HStack spacing="5" margin="5">
       <Heading>Sook</Heading>
       <NextLink href="/creator/tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL" passHref>
-        <Button as="a">Creator</Button>
+        <Button as="a">🧑‍🎨 Creator</Button>
       </NextLink>
       <NextLink href="/collector/tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL" passHref>
-        <Button as="a">Collector</Button>
+        <Button as="a">🧑‍🌾 Collector</Button>
       </NextLink>
     </HStack>
   );
