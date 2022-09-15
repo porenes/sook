@@ -160,7 +160,7 @@ export const getServerSideProps = async (ctx) => {
   ({ data } = await client.query({
     query: gql`
       query GetProfile {
-        tzprofiles_by_pk(account: "tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL") {
+        tzprofiles_by_pk(account: "${cid}") {
           alias
           description
           discord
@@ -174,7 +174,6 @@ export const getServerSideProps = async (ctx) => {
       }
     `,
   }));
-  console.log(data);
   const profile = data.tzprofiles_by_pk;
   return {
     props: {
