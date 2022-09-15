@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-key */
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { FaDiscord, FaGithub, FaTwitter, FaGlobe } from "react-icons/fa";
 import {
   Box,
   Heading,
@@ -20,6 +19,7 @@ import { useQuery } from "@apollo/client";
 import Head from "next/head";
 import PlatformTokenLink from "../../components/tokens/PlatformTokenLink";
 import { getCollectionQuery } from "../../utils/collector/collection";
+import ProfileDetails from "../../components/profile/profileDetails";
 
 export default function Collector({ id }) {
   const QUERY = getCollectionQuery(id);
@@ -60,29 +60,7 @@ export default function Collector({ id }) {
             <Text>{nfts.length} NFTs</Text>
             {id}
           </Box>
-          <Box p="5" border="1px" borderRadius="lg" fontSize="sm">
-            <Text>{profile.description}</Text>
-            <HStack>
-              <Button as="a" href={profile.discord}>
-                <FaDiscord />
-              </Button>
-              <Button as="a" href={profile.github}>
-                <FaGithub />
-              </Button>
-              {profile?.twitter && (
-                <Button
-                  as="a"
-                  href={"https://twitter.com/" + profile.twitter}
-                  target="_blank"
-                >
-                  <FaTwitter />
-                </Button>
-              )}
-              <Button as="a" href={profile.website}>
-                <FaGlobe />
-              </Button>
-            </HStack>
-          </Box>
+          <ProfileDetails profile={profile} />
         </HStack>
       </Center>
 
