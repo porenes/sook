@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-key */
-import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { FaDiscord, FaGithub, FaTwitter, FaGlobe } from "react-icons/fa";
 import {
@@ -15,13 +14,36 @@ import {
   HStack,
   Button,
   Avatar,
+  Spinner,
 } from "@chakra-ui/react";
-
+import { useQuery } from "@apollo/client";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import PlatformTokenLink from "../../components/tokens/PlatformTokenLink";
+import { getCollectionQuery } from "../../utils/collector/collection";
 
-export default function Collector({ id, nfts, profile }) {
+export default function Collector({ id }) {
+  const QUERY = getCollectionQuery(id);
+  const { data, loading, error } = useQuery(QUERY);
+  if (loading) {
+    return (
+      <Center>
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Center>
+    );
+  }
+
+  if (error) {
+    //TODO catch error
+    return null;
+  }
+  const nfts = data.holdings;
+  const profile = data.tzprofiles_by_pk;
   return (
     <Box>
       <Head>
@@ -137,71 +159,11 @@ export default function Collector({ id, nfts, profile }) {
     </Box>
   );
 }
-
-export async function getServerSideProps(ctx) {
-  console.log(ctx.query);
+export const getServerSideProps = async (ctx) => {
   const { id } = ctx.query;
-  const client = new ApolloClient({
-    uri: "https://unstable-do-not-use-in-production-api.teztok.com/v1/graphql",
-    cache: new InMemoryCache(),
-  });
-  //TODO add support for https://emojiart.xyz/ contract KT1VBe538e2ucXhdWdoaFnLpyCiTkvsPkyZm
-  const { data } = await client.query({
-    query: gql`
-      query GetHoldings {
-        holdings(
-          where: {
-            holder_address: { _eq: "${id}" }
-            amount: { _gt: 0 }
-            fa2_address: { _neq: "KT1VBe538e2ucXhdWdoaFnLpyCiTkvsPkyZm" }
-          }
-          order_by: { last_received_at: desc }
-        ) {
-          amount
-          fa2_address
-          token_id
-          token {
-            artist_address
-            name
-            platform
-            thumbnail_uri
-            artist_profile {
-              alias
-            }
-            sales_count
-            sales_volume
-            highest_sales_price
-            lowest_sales_price
-            last_sales_price
-            burned_editions
-            editions
-            first_sales_price
-            lowest_price_listing(path: "price")
-            price
-            fa2_address
-            token_id
-            display_uri
-          }
-        }
-        tzprofiles_by_pk(account: "${id}") {
-          alias
-          description
-          discord
-          domain_name
-          ethereum
-          github
-          logo
-          twitter
-          website
-        }
-      }
-    `,
-  });
   return {
     props: {
       id,
-      nfts: data.holdings,
-      profile: data.tzprofiles_by_pk,
     },
   };
-}
+};
