@@ -56,8 +56,13 @@ const Creator = ({ data }) => {
             return (
               <Tr key={token.fx_issuer_id}>
                 <Td>{token.fx_collection_name}</Td>
-                <Td>FXHASH</Td>
-                <Td>?</Td>
+                <Td>
+                  {" "}
+                  <PlatformTokenLink token={token}>
+                    {token.platform}
+                  </PlatformTokenLink>
+                </Td>
+                <Td>{token.fx_collection_editions}</Td>
                 <Td>?</Td>
                 <Td>?</Td>
                 <Td>?</Td>

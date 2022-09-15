@@ -12,7 +12,7 @@ export default function PlatformTokenLink({ children, token }) {
       platformURL = "https://www.versum.xyz/token/versum/" + token.token_id;
       break;
     case "FXHASH":
-      platformURL = "https://www.fxhash.xyz/gentk/" + token.token_id;
+      platformURL = "https://www.fxhash.xyz/generative/" + token.fx_issuer_id;
       break;
     case "HEN":
       platformURL = "https://teia.art/objkt/" + token.token_id;
