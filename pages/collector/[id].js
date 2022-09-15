@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-key */
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { FaDiscord, FaGithub, FaTwitter, FaGlobe } from "react-icons/fa";
 import {
   Box,
   Heading,
@@ -10,51 +11,61 @@ import {
   Image,
   SimpleGrid,
   Link,
+  Center,
+  HStack,
+  Button,
+  Avatar,
 } from "@chakra-ui/react";
+
 import Head from "next/head";
 import { useRouter } from "next/router";
+import PlatformTokenLink from "../../components/tokens/PlatformTokenLink";
 
-export default function Collector({ nfts }) {
+export default function Collector({ id, nfts, profile }) {
   return (
     <Box>
       <Head>
         <title>Sook</title>
         <meta name="description" content="Your Tezos NFT Sook" />
       </Head>
-      <Heading as="h1" textAlign="center">
-        {nfts.length} NFTs
-      </Heading>
+      <Center margin="5%">
+        <HStack>
+          <Box p="5" border="1px" borderRadius="lg">
+            <HStack>
+              <Avatar name={profile?.alias} src={profile.logo} />
+              <Heading>{profile?.alias}</Heading>
+            </HStack>
+            <Text>{nfts.length} NFTs</Text>
+            {id}
+          </Box>
+          <Box p="5" border="1px" borderRadius="lg" fontSize="sm">
+            <Text>{profile.description}</Text>
+            <HStack>
+              <Button as="a" href={profile.discord}>
+                <FaDiscord />
+              </Button>
+              <Button as="a" href={profile.github}>
+                <FaGithub />
+              </Button>
+              {profile?.twitter && (
+                <Button
+                  as="a"
+                  href={"https://twitter.com/" + profile.twitter}
+                  target="_blank"
+                >
+                  <FaTwitter />
+                </Button>
+              )}
+              <Button as="a" href={profile.website}>
+                <FaGlobe />
+              </Button>
+            </HStack>
+          </Box>
+        </HStack>
+      </Center>
 
       <SimpleGrid columns={[2, 3, 5]}>
         {nfts.map((nft) => {
-          let platformURL = "#";
-          switch (nft.token.platform) {
-            case "OBJKT":
-              platformURL =
-                "https://objkt.com/asset/" +
-                nft.fa2_address +
-                "/" +
-                nft.token_id;
-              break;
-            case "VERSUM":
-              platformURL =
-                "https://www.versum.xyz/token/versum/" + nft.token_id;
-              break;
-            case "FXHASH":
-              platformURL = "https://www.fxhash.xyz/gentk/" + nft.token_id;
-              break;
-            case "HEN":
-              platformURL = "https://hic.af/o/" + nft.token_id;
-              break;
-
-            default:
-              platformURL =
-                "https://objkt.com/asset/" +
-                nft.fa2_address +
-                "/" +
-                nft.token_id;
-              break;
-          }
           return (
             <Box
               alignItems="center"
@@ -108,12 +119,11 @@ export default function Collector({ nfts }) {
                 </Text>
                 <Flex mt={2} align="center">
                   <Text ml={1} fontSize="sm">
-                    <Link href={platformURL} isExternal>
+                    <PlatformTokenLink token={nft.token}>
                       {nft.token_id.length < 5
                         ? nft.token_id
                         : nft.token_id.slice(0, 5) + "..."}
-                      <ExternalLinkIcon />
-                    </Link>
+                    </PlatformTokenLink>
                   </Text>
                 </Flex>
               </Box>
@@ -132,6 +142,7 @@ export async function getServerSideProps(ctx) {
     uri: "https://unstable-do-not-use-in-production-api.teztok.com/v1/graphql",
     cache: new InMemoryCache(),
   });
+  //TODO add support for https://emojiart.xyz/ contract KT1VBe538e2ucXhdWdoaFnLpyCiTkvsPkyZm
   const { data } = await client.query({
     query: gql`
       query GetHoldings {
@@ -139,11 +150,9 @@ export async function getServerSideProps(ctx) {
           where: {
             holder_address: { _eq: "${id}" }
             amount: { _gt: 0 }
+            fa2_address: { _neq: "KT1VBe538e2ucXhdWdoaFnLpyCiTkvsPkyZm" }
           }
-          order_by: {
-            last_received_at: asc
-            token: { artist_profile: { alias: asc } }
-          }
+          order_by: { last_received_at: desc }
         ) {
           amount
           fa2_address
@@ -166,14 +175,29 @@ export async function getServerSideProps(ctx) {
             first_sales_price
             lowest_price_listing(path: "price")
             price
+            fa2_address
+            token_id
           }
+        }
+        tzprofiles_by_pk(account: "${id}") {
+          alias
+          description
+          discord
+          domain_name
+          ethereum
+          github
+          logo
+          twitter
+          website
         }
       }
     `,
   });
   return {
     props: {
+      id,
       nfts: data.holdings,
+      profile: data.tzprofiles_by_pk,
     },
   };
 }
