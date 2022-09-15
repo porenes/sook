@@ -76,10 +76,13 @@ export default function Collector({ id, nfts, profile }) {
               <Box p="2" maxW="320px" h="400px" borderWidth="1px">
                 {nft.token.thumbnail_uri && (
                   <Image
-                    src={nft.token.thumbnail_uri.replace(
-                      "ipfs://",
-                      "https://ipfs.io/ipfs/"
-                    )}
+                    src={(![
+                      "ipfs://QmNrhZHUaEqxhyLfqoq1mtHSipkWHeT31LNHb1QEbDHgnc",
+                      "ipfs://QmY7npznSASiN61trocXBbYe43iRKKicx2ZtZgQZNJRjtA",
+                    ].includes(nft.token.thumbnail_uri)
+                      ? nft.token.thumbnail_uri
+                      : nft.token.display_uri
+                    )?.replace("ipfs://", "https://ipfs.io/ipfs/")}
                     alt={nft.token.name}
                     placeholder="blur"
                     maxH="320px"
@@ -177,6 +180,7 @@ export async function getServerSideProps(ctx) {
             price
             fa2_address
             token_id
+            display_uri
           }
         }
         tzprofiles_by_pk(account: "${id}") {
