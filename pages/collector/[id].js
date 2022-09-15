@@ -20,7 +20,6 @@ export default function Collector({ nfts }) {
       <Head>
         <title>Sook</title>
         <meta name="description" content="Your Tezos NFT Sook" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Heading as="h1" textAlign="center">
         {nfts.length} NFTs
