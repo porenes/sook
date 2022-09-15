@@ -83,7 +83,7 @@ const Creator = ({ data }) => {
                   <Td>{token.fx_collection_name}</Td>
                   <Td>
                     {" "}
-                    <PlatformTokenLink token={token}>
+                    <PlatformTokenLink token={token} fxhashUseGenerator>
                       {token.platform}
                     </PlatformTokenLink>
                   </Td>

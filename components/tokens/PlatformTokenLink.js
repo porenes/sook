@@ -1,7 +1,11 @@
 import { Link } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 
-export default function PlatformTokenLink({ children, token }) {
+export default function PlatformTokenLink({
+  children,
+  token,
+  fxhashUseGenerator,
+}) {
   let platformURL = "#";
   switch (token.platform) {
     case "OBJKT":
@@ -12,7 +16,11 @@ export default function PlatformTokenLink({ children, token }) {
       platformURL = "https://www.versum.xyz/token/versum/" + token.token_id;
       break;
     case "FXHASH":
-      platformURL = "https://www.fxhash.xyz/generative/" + token.fx_issuer_id;
+      if (fxhashUseGenerator) {
+        platformURL = "https://www.fxhash.xyz/generative/" + token.fx_issuer_id;
+      } else {
+        platformURL = "https://www.fxhash.xyz/gentk/" + token.token_id;
+      }
       break;
     case "HEN":
       platformURL = "https://teia.art/objkt/" + token.token_id;
