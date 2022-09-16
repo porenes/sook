@@ -22,14 +22,21 @@ export default function TokenCard({ nft }) {
       borderWidth="1px"
     >
       {nft.token.thumbnail_uri && (
-        <Image
-          src={(!THUMB_PLACEHOLDERS.includes(nft.token.thumbnail_uri)
-            ? nft.token.thumbnail_uri
-            : nft.token.display_uri
-          )?.replace("ipfs://", IPFS_HTTP_GATEWAY_BASE_URI)}
-          alt={nft.token.name}
-          placeholder="blur"
-        />
+        <Flex flex={1}>
+          <Image
+            src={(!THUMB_PLACEHOLDERS.includes(nft.token.thumbnail_uri)
+              ? nft.token.thumbnail_uri
+              : nft.token.display_uri
+            )?.replace("ipfs://", IPFS_HTTP_GATEWAY_BASE_URI)}
+            alt={nft.token.name}
+            placeholder="blur"
+            objectFit="contain"
+            // boxSize="100%"
+
+            h={"250px"}
+            w={"full"}
+          />
+        </Flex>
       )}
 
       <Flex align="baseline" mt={2}>
@@ -48,12 +55,12 @@ export default function TokenCard({ nft }) {
           </Link>
         </Text>
       </Flex>
-      <Text mt={2} fontSize="xl" fontWeight="semibold" lineHeight="short">
+      <Text mt={2} fontSize="md" fontWeight="semibold" lineHeight="short">
         {nft.token.name?.length < 25
           ? nft.token.name
           : nft.token.name?.slice(0, 25) + "..."}
       </Text>
-      <Text mt={2}>
+      <Text mt={2} fontSize="xs">
         xtz {nft.token.price / 10 ** 6} {"-> "}
         {nft.token.last_sales_price / 10 ** 6} {"-> "}
         {nft.token.lowest_price_listing / 10 ** 6}
@@ -64,7 +71,7 @@ export default function TokenCard({ nft }) {
           <PlatformTokenLink token={nft.token}>
             {nft.token_id.length < 5
               ? nft.token_id
-              : nft.token_id.slice(0, 5) + "..."}
+              : nft.token_id.slice(0, 7) + "..."}
           </PlatformTokenLink>
         </Text>
       </Flex>
