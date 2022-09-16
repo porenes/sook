@@ -1,27 +1,21 @@
 /* eslint-disable react/jsx-key */
-import { ExternalLinkIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Heading,
-  Flex,
-  Badge,
-  Text,
-  Image,
-  SimpleGrid,
-  Link,
-  Center,
-  HStack,
-  Button,
-  Avatar,
-  Spinner,
-} from "@chakra-ui/react";
 import { useQuery } from "@apollo/client";
+import {
+  Avatar,
+  Box,
+  Button,
+  Center,
+  Heading,
+  HStack,
+  SimpleGrid,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import Head from "next/head";
-import PlatformTokenLink from "../../components/tokens/PlatformTokenLink";
-import { getCollectionQuery } from "../../utils/collector/collection";
+import NextLink from "next/link";
 import ProfileDetails from "../../components/profile/profileDetails";
 import TokenCard from "../../components/tokens/TokenCard";
-import NextLink from "next/link";
+import { getCollectionQuery } from "../../utils/collector/collection";
 
 export default function Collector({ id }) {
   const QUERY = getCollectionQuery(id);
