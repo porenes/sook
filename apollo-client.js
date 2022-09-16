@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: "https://unstable-do-not-use-in-production-api.teztok.com/v1/graphql",
+  uri: process.env.TEZTOK_API_BASE_URI,
   cache: new InMemoryCache(),
 });
 

@@ -7,8 +7,6 @@ const THUMB_PLACEHOLDERS = [
   "ipfs://QmY7npznSASiN61trocXBbYe43iRKKicx2ZtZgQZNJRjtA",
 ];
 
-const IPFS_HTTP_GATEWAY_BASE_URI = "https://ipfs.io/ipfs/";
-
 export default function TokenCard({ nft }) {
   return (
     <Box
@@ -27,7 +25,7 @@ export default function TokenCard({ nft }) {
             src={(!THUMB_PLACEHOLDERS.includes(nft.token.thumbnail_uri)
               ? nft.token.thumbnail_uri
               : nft.token.display_uri
-            )?.replace("ipfs://", IPFS_HTTP_GATEWAY_BASE_URI)}
+            )?.replace("ipfs://", process.env.IPFS_HTTP_GATEWAY_BASE_URI)}
             alt={nft.token.name}
             placeholder="blur"
             objectFit="contain"
