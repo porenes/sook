@@ -2,9 +2,11 @@ import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 import {
   Avatar,
   Box,
+  Button,
   Center,
   Heading,
   HStack,
+  Link,
   Table,
   Tbody,
   Td,
@@ -15,6 +17,7 @@ import {
 import Head from "next/head";
 import ProfileDetails from "../../components/profile/profileDetails";
 import PlatformTokenLink from "../../components/tokens/PlatformTokenLink";
+import NextLink from "next/link";
 
 const Creator = ({ data }) => {
   const { cid, creations, creations_fxhash, profile } = data;
@@ -30,6 +33,11 @@ const Creator = ({ data }) => {
             <HStack>
               <Avatar name={profile?.alias} src={profile.logo} />
               <Heading>{profile?.alias}</Heading>
+              <NextLink href={"/collector/" + cid} passHref>
+                <Button as="a" size="xs">
+                  View collection
+                </Button>
+              </NextLink>
             </HStack>
             {cid}
           </Box>

@@ -21,6 +21,7 @@ import PlatformTokenLink from "../../components/tokens/PlatformTokenLink";
 import { getCollectionQuery } from "../../utils/collector/collection";
 import ProfileDetails from "../../components/profile/profileDetails";
 import TokenCard from "../../components/tokens/TokenCard";
+import NextLink from "next/link";
 
 export default function Collector({ id }) {
   const QUERY = getCollectionQuery(id);
@@ -57,6 +58,11 @@ export default function Collector({ id }) {
             <HStack>
               <Avatar name={profile?.alias} src={profile.logo} />
               <Heading>{profile?.alias}</Heading>
+              <NextLink href={"/creator/" + id} passHref>
+                <Button as="a" size="xs">
+                  View creations
+                </Button>
+              </NextLink>
             </HStack>
             <Text>{nfts.length} NFTs</Text>
             {id}
