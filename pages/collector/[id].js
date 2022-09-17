@@ -36,6 +36,7 @@ export default function Collector({ id }) {
 
   if (error) {
     //TODO catch error
+    console.error("Error fetching collection");
     return null;
   }
   const nfts = data.holdings;

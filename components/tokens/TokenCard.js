@@ -25,7 +25,10 @@ export default function TokenCard({ nft }) {
             src={(!THUMB_PLACEHOLDERS.includes(nft.token.thumbnail_uri)
               ? nft.token.thumbnail_uri
               : nft.token.display_uri
-            )?.replace("ipfs://", process.env.IPFS_HTTP_GATEWAY_BASE_URI)}
+            )?.replace(
+              "ipfs://",
+              process.env.NEXT_PUBLIC_IPFS_HTTP_GATEWAY_BASE_URI
+            )}
             alt={nft.token.name}
             placeholder="blur"
             objectFit="contain"
