@@ -13,10 +13,12 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import CreationTable from "../../components/creations/CreationTable";
 import ProfileDetails from "../../components/profile/profileDetails";
+import { getDecaGalleries } from "../../utils/deca/decaApi";
 
 const Creator = ({ data }) => {
   const router = useRouter();
   const { cid, creations, creations_fxhash, profile } = data;
+  // const result = getDecaGalleries(cid);
   const handleSubmit = (event) =>
     event.key == "Enter" && router.push("/creator/" + event.target.value);
   return (
