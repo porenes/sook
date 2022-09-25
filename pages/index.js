@@ -16,8 +16,14 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { useContext } from "react";
+import { DappContext } from "../contexts/dAppContext";
 
 export default function Home() {
+  const { accountConnected, accountAddress } = useContext(DappContext);
+  const redirectAddr = accountConnected
+    ? accountAddress
+    : "tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL";
   return (
     <Container>
       <Head>
@@ -50,10 +56,7 @@ export default function Home() {
               borderWidth="1px"
               borderRadius="lg"
             >
-              <NextLink
-                href="/creator/tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL"
-                passHref
-              >
+              <NextLink href={`/creator/${redirectAddr}`} passHref>
                 <Link>
                   <Heading as="h2">Creator &rarr;</Heading>
                   <p>Creator tools</p>
@@ -69,10 +72,7 @@ export default function Home() {
               borderWidth="1px"
               borderRadius="lg"
             >
-              <NextLink
-                href="/collector/tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL"
-                passHref
-              >
+              <NextLink href={`/collector/${redirectAddr}`} passHref>
                 <Link>
                   <Heading as="h2">Collectors &rarr;</Heading>
                   <p>Collectors tools</p>

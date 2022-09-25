@@ -6,10 +6,12 @@ import { useContext, useEffect, useState } from "react";
 import DisconnectWalletButton from "./wallet/disconnectWalletButton";
 
 export default function Navbar() {
-  const { accountConnected } = useContext(DappContext);
+  const { accountConnected, accountAddress } = useContext(DappContext);
   return (
     <HStack spacing="5" margin="5">
-      <Heading>Sook</Heading>
+      <NextLink href="/" passHref>
+        <Heading as="a">Sook</Heading>
+      </NextLink>
       <NextLink href="/creator/tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL" passHref>
         <Button as="a">🧑‍🎨 Creator</Button>
       </NextLink>
@@ -17,7 +19,13 @@ export default function Navbar() {
         <Button as="a">🧑‍🌾 Collector</Button>
       </NextLink>
       <Spacer />
-      {!accountConnected ? <ConnectWalletButton /> : <DisconnectWalletButton />}
+      {!accountConnected ? (
+        <ConnectWalletButton />
+      ) : (
+        <div>
+          {accountAddress} <DisconnectWalletButton />
+        </div>
+      )}
     </HStack>
   );
 }
