@@ -21,10 +21,11 @@ const Creator = ({ data }) => {
   // const result = getDecaGalleries(cid);
   const handleSubmit = (event) =>
     event.key == "Enter" && router.push("/creator/" + event.target.value);
+  const pageTitle = `Sook creator - ${profile?.alias || cid}`;
   return (
     <>
       <Head>
-        <title>Sook creator - {profile?.alias || cid}</title>
+        <title>{pageTitle}</title>
       </Head>
       <Center>
         <Input
