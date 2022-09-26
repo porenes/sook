@@ -46,6 +46,7 @@ const Creator = ({ data }) => {
                 </Button>
               </NextLink>
             </HStack>
+            <Text>{creations.length + creations_fxhash.length} creations</Text>
           </Box>
           <ProfileDetails profile={profile} />
         </HStack>

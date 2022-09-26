@@ -59,7 +59,7 @@ export default function Collector({ id }) {
                 </Button>
               </NextLink>
             </HStack>
-            <Text>{nfts.length} NFTs</Text>
+            <Text>{nfts.length} collected</Text>
             {id}
           </Box>
           <ProfileDetails profile={profile} />
