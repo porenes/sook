@@ -1,5 +1,28 @@
 import { gql } from "@apollo/client";
 
+export function getCreatorHoldingsQuery(creatorId, collectorId) {
+  const QUERY = gql`
+  query CreatorHoldings {
+    holdings_aggregate(where: {holder_address: {_eq: "${collectorId}"}, token: {artist_address: {_eq: "${creatorId}"}}, amount: {_neq: "0"}}) {
+      aggregate {
+        count
+        sum {
+          amount
+        }
+      }
+      nodes {
+        token_id
+        fa2_address
+        amount
+      }
+    }
+  }
+  
+  `;
+
+  return QUERY;
+}
+
 export function getCollectionQuery(id) {
   const QUERY = gql`
 query GetHoldings {
