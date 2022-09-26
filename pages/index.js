@@ -21,9 +21,6 @@ import { DappContext } from "../contexts/dAppContext";
 
 export default function Home() {
   const { accountConnected, accountAddress } = useContext(DappContext);
-  const redirectAddr = accountConnected
-    ? accountAddress
-    : "tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL";
   return (
     <Container>
       <Head>
@@ -46,41 +43,42 @@ export default function Home() {
             <p>Your ultimate tools for Tezos</p>
           </Box>
         </Center>
-
-        <SimpleGrid columns={2}>
-          <Box alignItems="center" justifyContent="space-between" margin="5%">
-            <Box
-              p="2"
-              maxW="320px"
-              h="100px"
-              borderWidth="1px"
-              borderRadius="lg"
-            >
-              <NextLink href={`/creator/${redirectAddr}`} passHref>
-                <Link>
-                  <Heading as="h2">Creator &rarr;</Heading>
-                  <p>Creator tools</p>
-                </Link>
-              </NextLink>
+        {accountConnected && (
+          <SimpleGrid columns={2}>
+            <Box alignItems="center" justifyContent="space-between" margin="5%">
+              <Box
+                p="2"
+                maxW="320px"
+                h="100px"
+                borderWidth="1px"
+                borderRadius="lg"
+              >
+                <NextLink href={`/creator/${accountAddress}`} passHref>
+                  <Link>
+                    <Heading as="h2">Creator &rarr;</Heading>
+                    <p>Creator tools</p>
+                  </Link>
+                </NextLink>
+              </Box>
             </Box>
-          </Box>
-          <Box alignItems="center" justifyContent="space-between" margin="5%">
-            <Box
-              p="2"
-              maxW="320px"
-              h="100px"
-              borderWidth="1px"
-              borderRadius="lg"
-            >
-              <NextLink href={`/collector/${redirectAddr}`} passHref>
-                <Link>
-                  <Heading as="h2">Collectors &rarr;</Heading>
-                  <p>Collectors tools</p>
-                </Link>
-              </NextLink>
+            <Box alignItems="center" justifyContent="space-between" margin="5%">
+              <Box
+                p="2"
+                maxW="320px"
+                h="100px"
+                borderWidth="1px"
+                borderRadius="lg"
+              >
+                <NextLink href={`/collector/${accountAddress}`} passHref>
+                  <Link>
+                    <Heading as="h2">Collectors &rarr;</Heading>
+                    <p>Collectors tools</p>
+                  </Link>
+                </NextLink>
+              </Box>
             </Box>
-          </Box>
-        </SimpleGrid>
+          </SimpleGrid>
+        )}
       </Box>
     </Container>
   );

@@ -12,19 +12,23 @@ export default function Navbar() {
       <NextLink href="/" passHref>
         <Heading as="a">Sook</Heading>
       </NextLink>
-      <NextLink href="/creator/tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL" passHref>
-        <Button as="a">🧑‍🎨 Creator</Button>
-      </NextLink>
-      <NextLink href="/collector/tz1LRugk5K1StypSUpwtRTwkc3J2KriyCNTL" passHref>
-        <Button as="a">🧑‍🌾 Collector</Button>
-      </NextLink>
-      <Spacer />
+
       {!accountConnected ? (
-        <ConnectWalletButton />
+        <>
+          <Spacer />
+          <ConnectWalletButton />
+        </>
       ) : (
-        <div>
-          {accountAddress} <DisconnectWalletButton />
-        </div>
+        <>
+          <NextLink href={"/creator/" + accountAddress} passHref>
+            <Button as="a">🧑‍🎨 Creator</Button>
+          </NextLink>
+          <NextLink href={"/collector/" + accountAddress} passHref>
+            <Button as="a">🧑‍🌾 Collector</Button>
+          </NextLink>
+          <Spacer />
+          <DisconnectWalletButton />
+        </>
       )}
     </HStack>
   );
