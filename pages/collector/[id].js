@@ -51,7 +51,7 @@ export default function Collector({ id }) {
         <HStack>
           <Box p="5" border="1px" borderRadius="lg">
             <HStack>
-              <Avatar name={profile?.alias} src={profile.logo} />
+              <Avatar name={profile?.alias} src={profile?.logo} />
               <Heading>{profile?.alias}</Heading>
               <NextLink href={"/creator/" + id} passHref>
                 <Button as="a" size="xs">
