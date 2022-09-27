@@ -1,13 +1,19 @@
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import PlatformTokenLink from "../../components/tokens/PlatformTokenLink";
+import TokenCard from "../tokens/TokenCard";
 
-export default function CreationTable({ creations, creations_fxhash }) {
+export default function CreationTable({
+  creations,
+  creations_fxhash,
+  holdings,
+}) {
   return (
     <Table size="sm">
       <Thead>
         <Tr>
           <Th>Name</Th>
           <Th>Platform</Th>
+          <Th>Owned</Th>
           <Th>Ed.</Th>
           <Th>🔥</Th>
           <Th>🏷</Th>
@@ -26,6 +32,16 @@ export default function CreationTable({ creations, creations_fxhash }) {
                 <PlatformTokenLink token={token}>
                   {token.platform}
                 </PlatformTokenLink>
+              </Td>
+              <Td isNumeric>
+                {holdings
+                  .filter((h) => {
+                    return (
+                      h.fa2_address == token.fa2_address &&
+                      h.token_id == token.token_id
+                    );
+                  })
+                  .reduce((ed, h) => (ed += h.amount), 0)}
               </Td>
               <Td isNumeric>{token.editions}</Td>
               <Td isNumeric>{token.burned_editions || ""}</Td>
@@ -47,13 +63,14 @@ export default function CreationTable({ creations, creations_fxhash }) {
                   {token.platform}
                 </PlatformTokenLink>
               </Td>
+              <Td isNumeric>-</Td>
               <Td isNumeric>{token.fx_collection_editions}</Td>
-              <Td isNumeric>?</Td>
-              <Td isNumeric>?</Td>
-              <Td isNumeric>?</Td>
-              <Td isNumeric>?</Td>
-              <Td isNumeric>?</Td>
-              <Td isNumeric>?</Td>
+              <Td isNumeric>-</Td>
+              <Td isNumeric>-</Td>
+              <Td isNumeric>-</Td>
+              <Td isNumeric>-</Td>
+              <Td isNumeric>-</Td>
+              <Td isNumeric>-</Td>
             </Tr>
           );
         })}

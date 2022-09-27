@@ -1,4 +1,4 @@
-import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
+import { ApolloClient, gql, InMemoryCache, useQuery } from "@apollo/client";
 import {
   Avatar,
   Box,
@@ -7,21 +7,51 @@ import {
   Heading,
   HStack,
   Input,
+  Spinner,
+  Text,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 import CreationTable from "../../components/creations/CreationTable";
 import ProfileDetails from "../../components/profile/profileDetails";
+import { DappContext } from "../../contexts/dAppContext";
+import { getCreatorHoldingsQuery } from "../../utils/collector/collection";
 import { getDecaGalleries } from "../../utils/deca/decaApi";
 
-const Creator = ({ data }) => {
+const Creator = (props) => {
   const router = useRouter();
-  const { cid, creations, creations_fxhash, profile } = data;
+  const { cid, creations, creations_fxhash, profile } = props.data;
   // const result = getDecaGalleries(cid);
   const handleSubmit = (event) =>
     event.key == "Enter" && router.push("/creator/" + event.target.value);
   const pageTitle = `Sook creator - ${profile?.alias || cid}`;
+  const { accountConnected, accountAddress } = useContext(DappContext);
+
+  const QUERY = getCreatorHoldingsQuery(cid, accountAddress);
+  const { data, loading, error } = useQuery(QUERY);
+
+  if (loading) {
+    return (
+      <Center>
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Center>
+    );
+  }
+
+  if (error) {
+    //TODO catch error
+    console.error("Error fetching collection");
+    return null;
+  }
+
   return (
     <>
       <Head>
@@ -46,6 +76,11 @@ const Creator = ({ data }) => {
                 </Button>
               </NextLink>
             </HStack>
+            <Text>{creations.length + creations_fxhash.length} creations</Text>
+            <Text>
+              Holding {data.holdings_aggregate.aggregate.count} creations /{" "}
+              {data.holdings_aggregate.aggregate.sum.amount} editions
+            </Text>
           </Box>
           <ProfileDetails profile={profile} />
         </HStack>
@@ -60,6 +95,7 @@ const Creator = ({ data }) => {
         <CreationTable
           creations={creations}
           creations_fxhash={creations_fxhash}
+          holdings={data.holdings_aggregate.nodes}
         />
       </Box>
     </>

@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders homepage unchanged 1`] = `
+<div>
+  <div
+    class="chakra-container css-0"
+  >
+    <div
+      class="css-0"
+    >
+      <div
+        class="css-0"
+      >
+        <div
+          class="css-0"
+        >
+          <h1
+            class="chakra-heading css-0"
+          >
+            Welcome to Sook
+          </h1>
+          <p>
+            Your ultimate tools for Tezos
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

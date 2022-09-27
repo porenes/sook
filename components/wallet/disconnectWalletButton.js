@@ -5,11 +5,7 @@ import { DappContext } from "../../contexts/dAppContext";
 const DisconnectWalletButton = () => {
   const { disconnectAccount } = useContext(DappContext);
 
-  return (
-    <Button variant="navLink" onClick={disconnectAccount}>
-      Disconnect
-    </Button>
-  );
+  return <Button onClick={disconnectAccount}>Disconnect</Button>;
 };
 
 export default DisconnectWalletButton;

@@ -5,11 +5,7 @@ import { DappContext } from "../../contexts/dAppContext";
 const ConnectWalletButton = () => {
   const { connectAccount } = useContext(DappContext);
 
-  return (
-    <Button variant="navLink" onClick={connectAccount}>
-      Connect
-    </Button>
-  );
+  return <Button onClick={connectAccount}>Connect</Button>;
 };
 
 export default ConnectWalletButton;

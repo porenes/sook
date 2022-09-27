@@ -142,7 +142,7 @@ export const DappProvider = ({ children }) => {
     }
     await wallet.clearActiveAccount();
     await wallet.disconnect();
-    window.location.reload();
+    window.location.assign("/");
   };
 
   const getTezBalance = useCallback(async () => {
