@@ -1,4 +1,5 @@
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import moment from "moment";
 import PlatformTokenLink from "../../components/tokens/PlatformTokenLink";
 import TokenCard from "../tokens/TokenCard";
 
@@ -8,19 +9,18 @@ export default function CreationTable({
   holdings,
 }) {
   return (
-    <Table size="sm">
+    <Table size="sm" p={0}>
       <Thead>
         <Tr>
           <Th>Name</Th>
-          <Th>Platform</Th>
-          <Th>Owned</Th>
+          <Th fontSize="2xs"></Th>
+          <Th fontSize="2xs">ow</Th>
           <Th>Ed.</Th>
           <Th>🔥</Th>
           <Th>🏷</Th>
           <Th>1st 🏷</Th>
-          <Th>🔝 💰</Th>
-          <Th>🔝 💁🏻‍♂️</Th>
-          <Th>Last 🏷</Th>
+          <Th fontSize="2xs">Last 🏷</Th>
+          <Th fontSize="2xs">Date</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -28,7 +28,7 @@ export default function CreationTable({
           return (
             <Tr key={token.platform + token.token_id}>
               <Td>{token.name}</Td>
-              <Td>
+              <Td fontSize="2xs">
                 <PlatformTokenLink token={token}>
                   {token.platform}
                 </PlatformTokenLink>
@@ -45,11 +45,20 @@ export default function CreationTable({
               </Td>
               <Td isNumeric>{token.editions}</Td>
               <Td isNumeric>{token.burned_editions || ""}</Td>
-              <Td isNumeric>{token?.price / 10 ** 6} tz</Td>
-              <Td isNumeric>{token?.first_sales_price / 10 ** 6} tz</Td>
-              <Td isNumeric>{token?.highest_sales_price / 10 ** 6} tz</Td>
-              <Td isNumeric>{token?.highest_offer_price / 10 ** 6} tz</Td>
-              <Td isNumeric>{token?.last_sales_price / 10 ** 6} tz</Td>
+              <Td isNumeric>
+                {token.price ? token.price / 10 ** 6 + "tz" : "-"}{" "}
+              </Td>
+              <Td isNumeric>
+                {token?.first_sales_price
+                  ? token?.first_sales_price / 10 ** 6 + "tz"
+                  : "-"}
+              </Td>
+              <Td isNumeric>
+                {token?.last_sales_price
+                  ? token?.last_sales_price / 10 ** 6 + "tz"
+                  : "-"}
+              </Td>
+              <Td>{moment(token?.minted_at).fromNow()}</Td>
             </Tr>
           );
         })}
