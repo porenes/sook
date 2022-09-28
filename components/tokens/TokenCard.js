@@ -1,6 +1,7 @@
 import { Box, Image, Flex, Badge, Text, Link } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import PlatformTokenLink from "./PlatformTokenLink";
+import ProfileName from "../profile/profileName";
 
 const THUMB_PLACEHOLDERS = [
   "ipfs://QmNrhZHUaEqxhyLfqoq1mtHSipkWHeT31LNHb1QEbDHgnc",
@@ -49,7 +50,10 @@ export default function TokenCard({ nft }) {
         <Text ml={2} fontSize="md" fontWeight="bold">
           by{" "}
           <Link href={"/creator/" + nft.token.artist_address} color="teal">
-            {nft.token.artist_profile?.alias || "anon"}
+            <ProfileName
+              artist_profile={nft.token.artist_profile}
+              artist_address={nft.token.artist_address}
+            />
           </Link>{" "}
           <Link href={"https://tzkt.io/" + nft.token.artist_address} isExternal>
             <ExternalLinkIcon />
