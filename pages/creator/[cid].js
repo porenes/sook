@@ -75,6 +75,11 @@ const Creator = (props) => {
                   View collection
                 </Button>
               </NextLink>
+              <NextLink href={"/sales/" + cid} passHref>
+                <Button as="a" size="xs">
+                  View sales
+                </Button>
+              </NextLink>
             </HStack>
             <Text>{creations.length + creations_fxhash.length} creations</Text>
             <Text>

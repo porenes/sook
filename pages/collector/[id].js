@@ -58,6 +58,11 @@ export default function Collector({ id }) {
                   View creations
                 </Button>
               </NextLink>
+              <NextLink href={"/sales/" + id} passHref>
+                <Button as="a" size="xs">
+                  View sales
+                </Button>
+              </NextLink>
             </HStack>
             <Text>{nfts.length} collected</Text>
             {id}

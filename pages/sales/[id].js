@@ -29,15 +29,18 @@ export default function Collector({ id }) {
     query CollectorSales($id: String!) {
       listings_aggregate(
         where: { seller_address: { _eq: $id }, status: { _eq: "active" } }
+        order_by: { token: { lowest_price_listing: desc_nulls_last } }
       ) {
         aggregate {
           count(columns: swap_id)
         }
         nodes {
-          start_price
           price
           token {
             name
+            highest_offer_price
+            last_sales_price
+            lowest_price_listing(path: "price")
           }
           status
           amount_left
@@ -102,6 +105,11 @@ export default function Collector({ id }) {
                   View creations
                 </Button>
               </NextLink>
+              <NextLink href={"/collector/" + id} passHref>
+                <Button as="a" size="xs">
+                  View collection
+                </Button>
+              </NextLink>
             </HStack>
             <Text>{aggregate.count} tokens on sales</Text>
             {id}
@@ -114,6 +122,10 @@ export default function Collector({ id }) {
           <Tr>
             <Th>id</Th>
             <Th>Name</Th>
+            <Th>Price</Th>
+            <Th>Last sales price</Th>
+            <Th>Lowest listing</Th>
+            <Th>Highest offer</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -122,6 +134,14 @@ export default function Collector({ id }) {
               <Tr key={swap.swap_id || swap.offer_id || swap.ask_id}>
                 <Td>{swap.swap_id || swap.offer_id || swap.ask_id}</Td>
                 <Td>{swap.token.name}</Td>
+                <Td>{swap.price / 10 ** 6 + "tz"}</Td>
+                <Td>{(swap.token.last_sales_price / 10 ** 6 || "-") + "tz"}</Td>
+                <Td>
+                  {(swap.token.lowest_price_listing / 10 ** 6 || "-") + "tz"}
+                </Td>
+                <Td>
+                  {(swap.token.highest_offer_price / 10 ** 6 || "-") + "tz"}
+                </Td>
               </Tr>
             );
           })}
