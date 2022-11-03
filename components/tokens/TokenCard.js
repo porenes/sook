@@ -14,7 +14,7 @@ export default function TokenCard({ nft }) {
       justifyContent="space-between"
       margin="1%"
       key={nft.fa2_address + nft.token_id}
-      p="1"
+      // p="1"
       maxW="320px"
       h="400px"
       borderWidth="1px"
@@ -60,12 +60,6 @@ export default function TokenCard({ nft }) {
         {nft.token.name?.length < 25
           ? nft.token.name
           : nft.token.name?.slice(0, 25) + "..."}
-      </Text>
-      <Text mt={2} fontSize="xs">
-        xtz {nft.token.price / 10 ** 6} {"-> "}
-        {nft.token.last_sales_price / 10 ** 6} {"-> "}
-        {nft.token.lowest_price_listing / 10 ** 6}
-        {"-> "}
       </Text>
       <Flex mt={2} align="center">
         <Text ml={1} fontSize="sm">
